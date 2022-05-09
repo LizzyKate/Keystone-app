@@ -1,14 +1,8 @@
 import React from 'react';
-import {View, Text, SafeAreaView} from 'react-native';
+import Feed from '../../components/InventoryFeed';
 
 const HomeScreen = () => {
-  return (
-    <SafeAreaView>
-      <View>
-        <Text>Home</Text>
-      </View>
-    </SafeAreaView>
-  );
+  return <Feed />;
 };
 
 export default HomeScreen;
