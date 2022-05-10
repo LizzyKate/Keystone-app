@@ -4,36 +4,34 @@ import Inventory from '../Inventory';
 import data from '../../data/inventory.json';
 import styles from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useIsFocused} from '@react-navigation/native';
 
 const Feed = () => {
-  const [info, setInfo] = useState([]);
+  const [info, setInfo] = useState(data);
+
+  const isFocused = useIsFocused();
 
   const allItems = async () => {
     try {
       await AsyncStorage.getItem('info');
-      const allInfo = await AsyncStorage.getItem('info');
-      setInfo(allInfo);
-    } catch (error) {
-      console.log(error);
-    }
+      const allInventoryInfo = await AsyncStorage.getItem('inventoryInfo');
+      if (allInventoryInfo) {
+        setInfo(JSON.parse(allInventoryInfo));
+      } else {
+        setInfo(data);
+      }
+    } catch (error) {}
   };
-
-  // const removeItems = async () => {
-  //   try {
-  //     const keys = await AsyncStorage.getAllKeys();
-  //     await AsyncStorage.multiRemove(keys);
-  //   } catch (error) {}
-  // };
 
   useEffect(() => {
     allItems();
-  }, []);
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>
       <FlatList
         contentContainerStyle={{
-          alignSelf: 'flex-start',
+          alignSelf: 'center',
           justifyContent: 'space-between',
           paddingBottom: 100,
         }}

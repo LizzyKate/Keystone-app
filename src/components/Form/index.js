@@ -12,11 +12,11 @@ const Form = () => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [type, setType] = useState('');
-  const [note, setNote] = useState('');
+  const [description, setdescription] = useState('');
   const navigation = useNavigation();
 
   const handleSubmit = useCallback(async () => {
-    if (!name && !price && !type && !note) {
+    if (!name && !price && !type && !description) {
       Alert.alert('Please fill in the required fields');
     } else {
       const inventory = {
@@ -24,25 +24,39 @@ const Form = () => {
         name: name,
         purchasePrice: Number(price),
         type: type,
-        description: note,
+        description: description,
         photo:
           'https://i.ibb.co/znXC7LQ/marcus-lewis-U63z-XX2f7ho-unsplash.jpg',
       };
-      // console.log(data);
-      data.push(inventory);
+
       try {
-        await AsyncStorage.setItem('info', JSON.stringify(data));
+        let allInventory = await AsyncStorage.getItem('inventoryInfo');
+        if (allInventory) {
+          allInventory = JSON.parse(allInventory);
+          allInventory.push(inventory);
+          console.log(allInventory, 'allInventory');
+          await AsyncStorage.setItem(
+            'inventoryInfo',
+            JSON.stringify(allInventory),
+          );
+        } else {
+          data.push(inventory);
+          await AsyncStorage.setItem('inventoryInfo', JSON.stringify(data));
+        }
       } catch (error) {
         console.log(error);
       }
       navigation.navigate('Home');
     }
-  }, [name, price, type, note]);
+  }, [name, price, type, description]);
 
+  const goBack = () => {
+    navigation.goBack();
+  };
   return (
     <View style={styles.container}>
       <View style={styles.navigate}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={goBack}>
           <Text style={styles.cancel}>Cancel</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleSubmit}>
@@ -68,10 +82,7 @@ const Form = () => {
         value={type}
         newValue={setType}
       />
-      <TextField value={note} newValue={setNote} />
-      {/* <TouchableOpacity style={styles.button}>
-        <Text style={styles.text}>Submit</Text>
-      </TouchableOpacity> */}
+      <TextField value={description} newValue={setdescription} />
     </View>
   );
 };
