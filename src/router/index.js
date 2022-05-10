@@ -13,7 +13,11 @@ const Route = () => {
         component={BottomNavigator}
         options={{headerShown: false}}
       />
-      <Root.Screen name="Form" component={FormScreen} />
+      <Root.Screen
+        name="Form"
+        component={FormScreen}
+        options={{headerShown: false}}
+      />
     </Root.Navigator>
   );
 };

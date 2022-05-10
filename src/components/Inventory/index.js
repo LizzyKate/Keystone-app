@@ -7,7 +7,7 @@ import styles from './styles';
 const Inventory = ({detail}) => {
   return (
     <>
-      <View style={styles.container}>
+      <View style={styles.container} key={detail.id}>
         <Body image={detail.photo} />
         <Content name={detail.name} price={detail.purchasePrice} />
       </View>
