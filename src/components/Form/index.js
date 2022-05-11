@@ -46,7 +46,7 @@ const Form = () => {
       } catch (error) {
         console.log(error);
       }
-      navigation.navigate('Home');
+      navigation.navigate('Top');
     }
   }, [name, price, type, description]);
 
